@@ -1,0 +1,141 @@
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+select, button {
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination .current {
+    font-weight: bold;
+    color: red;
+}
+
+.navbar {
+    display: flex;
+    background-color: #f4f4f4;
+    padding: 10px 20px;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.navbar a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+.navbar span {
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.product-detail-container {
+    display: flex;
+    flex-direction: column; /* mới */
+    max-width: 1000px;
+    margin: 40px auto;
+    gap: 40px;
+}
+
+.product-images img {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}
+
+.product-info {
+    max-width: 600px;
+}
+
+.product-info h2 {
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    margin: 5px 0;
+}
+
+.product-info form {
+    margin-top: 15px;
+}
+
+.product-reviews {
+    margin-top: 40px;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
+
+.review-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Đơn hàng đã bán</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding-top: 50px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #4f46e5; margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+        th { background-color: #f3f4f6; }
+        .link { color: #4f46e5; text-decoration: none; }
+        .link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <h2>📦 Đơn hàng bạn đã bán</h2>
+
+    <div th:if="${orders.isEmpty()}">
+        <p>Chưa có đơn hàng nào.</p>
+    </div>
+
+    <table th:if="${!orders.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Mã đơn</th>
+            <th>Ngày đặt</th>
+            <th>Khách hàng</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Xem</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orders}">
+            <td th:text="${o.orderId}">ID</td>
+            <td th:text="${#temporals.format(o.orderDate, 'dd/MM/yyyy HH:mm')}">Ngày</td>
+            <td th:text="${o.customerEmail}">Email</td>
+            <td th:text="${o.totalPrice} + ' đ'">0</td>
+            <td th:text="${o.status}">PENDING</td>
+            <td><a th:href="@{'/seller/orders/' + ${o.orderId}}" class="link">Chi tiết</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

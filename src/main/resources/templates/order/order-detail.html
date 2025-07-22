@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Chi tiết đơn hàng</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      padding-top: 50px;
+    }
+
+    .order-box {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e1065;
+      margin-bottom: 30px;
+    }
+
+    .info-block p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    .info-block p strong {
+      width: 140px;
+      display: inline-block;
+      color: #444;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      font-weight: bold;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 20px;
+    }
+
+    .status-form {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .status-form select {
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    .status-form button {
+      padding: 10px 20px;
+      font-weight: bold;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .status-form button:hover {
+      background-color: #059669;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      text-decoration: none;
+      background-color: #4f46e5;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+    }
+
+    .back-link:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="order-box">
+  <h2>🧾 Chi tiết đơn hàng</h2>
+
+  <div class="info-block">
+    <p><strong>Mã đơn:</strong> <span th:text="${order.orderId}"></span></p>
+    <p><strong>Ngày đặt:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Địa chỉ giao:</strong> <span th:text="${order.shippingAddress}"></span></p>
+    <p><strong>Trạng thái:</strong> <span th:text="${order.status}"></span></p>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>Sản phẩm</th>
+      <th>Số lượng</th>
+      <th>Đơn giá</th>
+      <th>Tổng</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${order.items}">
+      <td th:text="${item.productName}">Tên</td>
+      <td th:text="${item.quantity}">1</td>
+      <td th:text="${item.unitPrice} + ' đ'">123</td>
+      <td th:text="${item.totalPrice} + ' đ'">456</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p class="total">Tổng cộng: <span th:text="${order.totalPrice} + ' đ'"></span></p>
+
+  <!-- Cập nhật trạng thái nếu cho phép -->
+  <div th:if="${order.status != null}" class="status-form">
+    <form th:action="@{|/orders/my-orders/${order.orderId}/update-status|}" method="post">
+      <label for="status"><strong>Cập nhật trạng thái:</strong></label>
+      <select id="status" name="status" required>
+        <option value="">-- Chọn --</option>
+        <option th:if="${order.status.name() == 'PENDING'}" value="CANCELED">❌ Huỷ đơn</option>
+        <option th:if="${order.status.name() == 'SHIPPED'}" value="COMPLETED">✅ Đã nhận hàng</option>
+      </select>
+      <button type="submit">Cập nhật</button>
+    </form>
+  </div>
+
+  <a th:href="@{/orders/my-orders}" class="back-link">← Quay lại danh sách</a>
+</div>
+
+</body>
+</html>

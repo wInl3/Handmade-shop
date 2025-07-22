@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thanh toán</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f4f4f4;
+            padding-top: 50px;
+        }
+
+        .checkout-box {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .checkout-box h2 {
+            margin-bottom: 25px;
+            font-size: 24px;
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fafafa;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #388E3C;
+        }
+
+        .error-msg {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="checkout-box">
+    <h2>📝 Thông tin giao hàng</h2>
+
+    <form th:action="@{/orders/checkout}" th:object="${orderRequest}" method="post">
+        <div class="form-group">
+            <label for="fullName">👤 Họ tên người nhận:</label>
+            <input type="text" id="fullName" th:field="*{fullName}" placeholder="Nguyễn Văn A" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">📞 Số điện thoại:</label>
+            <input type="text" id="phone" th:field="*{phone}" placeholder="0909xxxxxx" required>
+        </div>
+
+        <div class="form-group">
+            <label for="shippingAddress">📦 Địa chỉ nhận hàng:</label>
+            <textarea id="shippingAddress" th:field="*{shippingAddress}" placeholder="Số nhà, đường, quận/huyện, tỉnh/thành..." rows="4" required></textarea>
+        </div>
+
+        <button type="submit">🛒 Đặt hàng</button>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" class="error-msg"></p>
+</div>
+
+
+</body>
+</html>

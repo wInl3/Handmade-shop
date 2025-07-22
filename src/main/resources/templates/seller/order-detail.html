@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chi tiết đơn hàng đã bán</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding-top: 50px; }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+        h2 { text-align: center; color: #4f46e5; margin-bottom: 25px; }
+        p { margin: 8px 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        th {
+            background-color: #f3f4f6;
+        }
+        .total {
+            text-align: right;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            text-decoration: none;
+            background-color: #4f46e5;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 6px;
+        }
+        .back-link:hover {
+            background-color: #4338ca;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <h2>🧾 Chi tiết đơn hàng đã bán</h2>
+
+    <p><strong>Mã đơn:</strong> <span th:text="${order.orderId}"></span></p>
+    <p><strong>Khách hàng:</strong> <span th:text="${order.customerEmail}"></span></p>
+    <p><strong>Ngày đặt:</strong> <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span></p>
+    <p><strong>Địa chỉ giao:</strong> <span th:text="${order.shippingAddress}"></span></p>
+    <p><strong>Trạng thái:</strong> <span th:text="${order.status}"></span></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Đơn giá</th>
+            <th>Tổng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${order.items}">
+            <td th:text="${item.productName}">Tên</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="${item.unitPrice} + ' đ'">0</td>
+            <td th:text="${item.totalPrice} + ' đ'">0</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p class="total">Tổng cộng: <span th:text="${order.totalPrice} + ' đ'"></span></p>
+
+    <a th:href="@{/seller/orders}" class="back-link">⬅ Quay lại</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Handmade Shop - Home</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- Nhúng navbar -->
+<div th:replace="fragments/header :: header"></div>
+
+<h1>Danh sách sản phẩm</h1>
+
+<!-- Lọc theo danh mục -->
+<form method="get" th:action="@{/home}">
+    <select name="categoryId">
+        <option value="" th:selected="${selectedCategoryId == null}">Tất cả danh mục</option>
+        <option th:each="category : ${categories}"
+                th:value="${category.categoryId}"
+                th:text="${category.name}"
+                th:selected="${selectedCategoryId != null and category.categoryId == selectedCategoryId}">
+
+        </option>
+    </select>
+    <button type="submit">Lọc</button>
+</form>
+
+<!-- Hiển thị danh sách sản phẩm -->
+<div class="product-grid">
+    <div th:each="product : ${products}" class="product-card">
+        <a th:href="@{'/product/' + ${product.productId}}">
+            <img th:if="${product.images != null and !product.images.isEmpty()}"
+                 th:src="${product.images[0].imageUrl}" alt="image"/>
+            <img th:unless="${product.images != null and !product.images.isEmpty()}"
+                 src="/images/default.png" alt="no image"/>
+            <h3 th:text="${product.name}">Tên sản phẩm</h3>
+        </a>
+        <p th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'">Giá</p>
+    </div>
+</div>
+
+<!-- Phân trang -->
+<div class="pagination" th:if="${totalPages > 1}">
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{/home(page=${i}, categoryId=${selectedCategoryId})}"
+           th:text="${i + 1}"
+           th:class="${i == currentPage} ? 'current' : ''">
+        </a>
+    </span>
+</div>
+</body>
+</html>

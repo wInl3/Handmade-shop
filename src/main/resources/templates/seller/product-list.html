@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Quản lý sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; padding-top: 50px; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 12px rgba(0,0,0,0.1); }
+        h2 { text-align: center; margin-bottom: 25px; color: #4f46e5; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #eee; text-align: center; }
+        th { background-color: #f3f4f6; }
+        .btn { padding: 6px 12px; text-decoration: none; background: #4f46e5; color: white; border-radius: 4px; font-size: 14px; }
+        .btn:hover { background: #4338ca; }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="container">
+    <h2>📦 Sản phẩm của bạn</h2>
+
+    <div style="text-align: right; margin-bottom: 15px;">
+        <a th:href="@{/seller/products/new}" class="btn">➕ Thêm sản phẩm mới</a>
+    </div>
+
+    <div th:if="${products.isEmpty()}">
+        <p>Bạn chưa có sản phẩm nào.</p>
+    </div>
+
+    <table th:if="${!products.isEmpty()}">
+        <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Trạng thái</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}">
+            <td th:text="${p.name}">Sản phẩm</td>
+            <td th:text="${p.price} + ' đ'">0</td>
+            <td th:text="${p.quantity}">0</td>
+            <td th:text="${p.isActive ? 'Hiển thị' : 'Ẩn'}">Trạng thái</td>
+            <td>
+                <a th:href="@{'/seller/products/' + ${p.productId} + '/edit'}" class="btn">✏️ Sửa</a>
+                <form th:action="@{'/seller/products/' + ${p.productId} + '/delete'}" method="post" style="display:inline;">
+                    <button type="submit" class="btn" onclick="return confirm('Bạn chắc chắn?')">🗑 Xoá</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${product.name}">Chi tiết sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .product-detail-container {
+            display: flex;
+            max-width: 1000px;
+            margin: 40px auto;
+            gap: 40px;
+        }
+
+        .product-images img {
+            width: 400px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .product-info p {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .product-info strong {
+            font-weight: bold;
+        }
+
+        .product-info form {
+            margin-top: 30px;
+        }
+
+        .product-info input[type="number"] {
+            width: 80px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .product-info button {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .product-info button:hover {
+            background-color: #388E3C;
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="product-detail-container">
+    <div class="product-images">
+        <img th:if="${product.images != null and !product.images.isEmpty()}"
+             th:src="${product.images[0].imageUrl}" alt="Ảnh sản phẩm">
+        <img th:unless="${product.images != null and !product.images.isEmpty()}"
+             src="/images/default.png" alt="Không có ảnh">
+    </div>
+
+    <div class="product-info">
+        <h2 th:text="${product.name}">Tên sản phẩm</h2>
+        <p><strong>Giá:</strong> <span th:text="${product.price} + ' đ'">95.000 đ</span></p>
+        <p><strong>Danh mục:</strong> <span th:text="${product.categoryName}">Trang sức handmade</span></p>
+        <p><strong>Người bán:</strong> <span th:text="${product.sellerName}">Nguyễn Văn A</span></p>
+        <p><strong>Mô tả:</strong></p>
+        <p th:text="${product.description}">Mô tả chi tiết sản phẩm ở đây...</p>
+
+        <!-- Nếu còn hàng mới cho đặt -->
+        <form th:if="${#authorization.expression('hasRole(''CUSTOMER'')')} and ${product.quantity > 0}"
+              th:action="@{/cart/add}" method="post">
+            <input type="hidden" name="productId" th:value="${product.productId}">
+            <label for="quantity">Số lượng:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1"
+                   th:attr="max=${product.quantity}">
+            <button type="submit">Thêm vào giỏ</button>
+        </form>
+
+        <!-- Hết hàng -->
+        <p th:if="${product.quantity == 0}" style="color: red;">❌ Sản phẩm này đã hết hàng</p>
+
+    </div>
+
+</div>
+
+<div class="product-reviews">
+    <h3>Đánh giá sản phẩm</h3>
+    <div th:if="${product.reviews != null and !product.reviews.isEmpty()}">
+        <div th:each="review : ${product.reviews}" class="review-item">
+            <p>
+                <strong th:text="${review.username}">Tên</strong> -
+                <span th:text="${review.rating} + '★'">5★</span>
+            </p>
+            <p th:text="${review.comment}">Nội dung đánh giá</p>
+            <small th:text="${#temporals.format(review.createdAt, 'dd/MM/yyyy HH:mm')}">Ngày</small>
+        </div>
+    </div>
+    <div th:if="${product.reviews == null or product.reviews.isEmpty()}">
+        <p>Chưa có đánh giá nào cho sản phẩm này.</p>
+    </div>
+</div>
+
+</body>
+</html>

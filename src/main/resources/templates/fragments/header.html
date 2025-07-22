@@ -1,0 +1,41 @@
+<!-- templates/fragments/header.html -->
+<div class="navbar" th:fragment="header">
+    <a th:href="@{/home}">Trang chủ</a>
+
+    <!-- ✅ Chỉ hiển thị khi đã đăng nhập -->
+    <div style="margin-left: auto;" th:if="${#authorization.expression('isAuthenticated()')}">
+        <span th:text="'Xin chào, ' + ${#authentication.name}">Tên người dùng</span>
+
+        <!-- Role: CUSTOMER -->
+        <a th:if="${#authorization.expression('hasRole(''CUSTOMER'')')}" th:href="@{/cart}">Giỏ hàng</a>
+        <a th:if="${#authorization.expression('hasRole(''CUSTOMER'')')}" th:href="@{/orders/my-orders}">Đơn hàng</a>
+
+
+        <!-- Role: SELLER -->
+        <a th:if="${#authorization.expression('hasRole(''SELLER'')')}" th:href="@{/seller/products}">📦 QL Sản phẩm</a>
+        <a th:if="${#authorization.expression('hasRole(''SELLER'')')}" th:href="@{/seller/orders}">QL Đơn hàng</a>
+
+        <!-- Role: ADMIN -->
+        <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/dashboard}">Admin</a>
+
+        <!-- Đăng xuất -->
+        <a href="#" onclick="logout();">Đăng xuất</a>
+        <script>
+            function logout() {
+                // Gửi request đến server để xóa cookie
+                fetch('/auth/web/logout')
+                    .then(() => {
+                        window.location.href = '/home';
+                    });
+            }
+        </script>
+
+    </div>
+
+    <!-- ✅ Chỉ hiển thị khi chưa đăng nhập -->
+    <div style="margin-left: auto;" th:if="${#authorization.expression('!isAuthenticated()')}">
+        <a th:href="@{/auth/web/login}">Đăng nhập</a>
+        <a th:href="@{/auth/web/register}">Đăng ký</a>
+    </div>
+
+</div>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thanh toán</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+      padding-top: 60px;
+    }
+
+    .payment-container {
+      max-width: 480px;
+      margin: auto;
+      background: white;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+    }
+
+    .payment-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 24px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      margin-bottom: 20px;
+    }
+
+    button {
+      width: 100%;
+      background-color: #10b981;
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+
+    .error-msg {
+      color: #e11d48;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="payment-container">
+  <h2>💳 Chọn phương thức thanh toán</h2>
+
+  <form th:action="@{/payment}" method="post" th:object="${paymentRequest}">
+    <input type="hidden" th:name="orderId" th:value="${orderId}" />
+
+    <label for="method">Phương thức thanh toán:</label>
+    <select id="method" name="method" required>
+      <option value="">-- Vui lòng chọn --</option>
+      <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+      <option value="BANK_TRANSFER">Chuyển khoản ngân hàng</option>
+      <option value="PAYPAL">PayPal</option>
+    </select>
+
+    <button type="submit">✅ Xác nhận thanh toán</button>
+  </form>
+
+  <div th:if="${error}" class="error-msg">[[${error}]]</div>
+</div>
+
+</body>
+</html>

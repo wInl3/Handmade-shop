@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thanh toán thành công</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0fdf4;
+      padding-top: 60px;
+    }
+
+    .success-box {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .success-box h2 {
+      color: #16a34a;
+      margin-bottom: 20px;
+    }
+
+    .success-box p {
+      font-size: 16px;
+      margin: 8px 0;
+      color: #333;
+    }
+
+    .success-box .order-id {
+      font-weight: bold;
+      color: #1e40af;
+    }
+
+    .success-box .amount {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    .btn-back {
+      margin-top: 25px;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4f46e5;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+
+    .btn-back:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="success-box">
+  <h2>🎉 Thanh toán thành công!</h2>
+
+  <p><strong>Mã thanh toán:</strong> <span class="order-id" th:text="${payment.paymentId}">...</span></p>
+  <p><strong>Mã đơn hàng:</strong> <span th:text="${payment.orderId}">...</span></p>
+  <p><strong>Phương thức:</strong> <span th:text="${payment.method}">...</span></p>
+  <p><strong>Trạng thái:</strong> <span th:text="${payment.status}">...</span></p>
+  <p><strong>Số tiền:</strong> <span class="amount" th:text="${payment.amount} + ' đ'">...</span></p>
+  <p><strong>Thời gian:</strong> <span th:text="${#temporals.format(payment.paidAt, 'dd/MM/yyyy HH:mm')}">...</span></p>
+
+  <a class="btn-back" th:href="@{/home}">🏠 Về trang chủ</a>
+</div>
+
+
+</body>
+</html>

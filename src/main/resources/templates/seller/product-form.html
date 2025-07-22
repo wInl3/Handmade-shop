@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm/Sửa sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f4f6; padding-top: 50px; }
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4f46e5;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        button {
+            margin-top: 25px;
+            background-color: #4f46e5;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #4338ca;
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="form-container">
+    <h2 th:text="${isEdit} ? '✏️ Sửa sản phẩm' : '➕ Thêm sản phẩm mới'">Thêm sản phẩm</h2>
+
+    <form th:action="@{${isEdit} ? '/seller/products/' + ${id} + '/edit' : '/seller/products'}"
+          method="post"
+          enctype="multipart/form-data">
+
+    <label for="name">Tên sản phẩm:</label>
+        <input type="text" id="name" name="name" th:value="${productRequest.name}" required>
+
+        <label for="description">Mô tả:</label>
+        <textarea id="description" name="description" rows="4" th:text="${productRequest.description}"></textarea>
+
+        <label for="price">Giá (VNĐ):</label>
+        <input type="number" id="price" name="price" min="0" th:value="${productRequest.price}" required>
+
+        <label for="quantity">Số lượng:</label>
+        <input type="number" id="quantity" name="quantity" min="1" th:value="${productRequest.quantity}" required>
+
+        <label for="category">Danh mục:</label>
+        <select id="category" name="categoryId" required>
+            <option value="">-- Chọn danh mục --</option>
+            <option th:each="c : ${categories}"
+                    th:value="${c.categoryId}"
+                    th:text="${c.name}"
+                    th:selected="${productRequest.categoryId == c.categoryId}">
+            </option>
+        </select>
+
+        <label for="images">Ảnh sản phẩm:</label>
+        <input type="file" id="images" name="images" multiple accept="image/*">
+
+        <label for="thumbnailIndex">Chọn ảnh đại diện:</label>
+        <input type="number" id="thumbnailIndex" name="thumbnailIndex" min="0" value="0">
+
+
+        <button type="submit" th:text="${isEdit} ? 'Cập nhật' : 'Tạo sản phẩm'">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
